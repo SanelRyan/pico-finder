@@ -107,25 +107,6 @@ bot.onText(/\/supported/, (msg) => {
 	}
 });
 
-const userRateLimit = {};
-const RATE_LIMIT_INTERVAL = 60 * 1000;
-
-bot.on("message", (msg) => {
-	const chatId = msg.chat.id;
-
-	if (!userRateLimit[chatId]) {
-		userRateLimit[chatId] = { lastRequestTime: 0 };
-	}
-
-	const currentTime = Date.now();
-	if (currentTime - userRateLimit[chatId].lastRequestTime < RATE_LIMIT_INTERVAL) {
-		bot.sendMessage(chatId, "⚠️ You're sending messages too quickly. Please wait a bit.");
-		return;
-	}
-
-	userRateLimit[chatId].lastRequestTime = currentTime;
-});
-
 const sendAlertToSubscribers = async (message) => {
 	if (subscribers.length === 0) {
 		console.log(colors.info("ℹ️ No subscribers to send alerts to."));
